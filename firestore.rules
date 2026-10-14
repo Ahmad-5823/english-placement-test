@@ -7,7 +7,7 @@ service cloud.firestore {
     function isTeacher() {
       return request.auth != null
         && request.auth.token.email_verified == true
-        && request.auth.token.email.lower() in ['ahmetmubdi100@gmail.com'];
+        && request.auth.token.email.lower() in ['zumourdaalmazloum@gmail.com'];
     }
     function isSelf(uid) {
       return request.auth != null && request.auth.uid == uid;

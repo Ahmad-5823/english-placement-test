@@ -9,4 +9,4 @@ window.FIREBASE_CONFIG = {
   messagingSenderId: "PASTE_SENDER_ID",
   appId: "PASTE_APP_ID"
 };
-window.TEACHER_EMAILS = ["ahmetmubdi100@gmail.com"];
+window.TEACHER_EMAILS = ["zumourdaalmazloum@gmail.com"];
