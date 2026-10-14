@@ -1,0 +1,39 @@
+rules_version = '2';
+// Paste this whole file into Firebase console → Firestore Database → Rules → Publish.
+// Put the SAME teacher email(s) here as in js/firebase-config.js (lower case).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isTeacher() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in ['ahmetmubdi100@gmail.com'];
+    }
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Finished tests: a pupil can send ONE result for their own account and can never read it.
+    match /results/{uid} {
+      allow create: if isSelf(uid)
+        && request.resource.data.uid == uid
+        && !('teacher' in request.resource.data);
+      allow read, update, delete: if isTeacher();
+    }
+
+    // Unfinished answers, so a pupil can continue later. Only that pupil (and the teacher) can see them.
+    match /drafts/{uid} {
+      allow read, write: if isSelf(uid);
+      allow read, delete: if isTeacher();
+    }
+
+    // Name and class of each signed-in pupil. A pupil cannot undo "submitted".
+    match /students/{uid} {
+      allow read: if isSelf(uid) || isTeacher();
+      allow create: if isSelf(uid);
+      allow update: if isTeacher()
+        || (isSelf(uid) && !(resource.data.get('submitted', false) == true
+                             && request.resource.data.get('submitted', false) != true));
+    }
+  }
+}
