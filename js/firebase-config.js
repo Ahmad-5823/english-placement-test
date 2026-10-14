@@ -9,4 +9,4 @@ window.FIREBASE_CONFIG = {
   messagingSenderId: "43862715581",
   appId: "1:43862715581:web:2d8d1f1c7fa72257609bd4"
 };
-window.TEACHER_EMAILS = ["zumourdaalmazloum@gmail.com"];
+window.TEACHER_EMAILS = ["zumourdaalmazloum@gmail.com", "ahmetmubdi100@gmail.com"];
