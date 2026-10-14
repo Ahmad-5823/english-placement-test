@@ -2,11 +2,11 @@
    2) Teacher accounts: only these Google emails can open teacher.html and see results.
       Use the SAME emails in firestore.rules. */
 window.FIREBASE_CONFIG = {
-  apiKey: "PASTE_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyAkDY79JwkoOFkHRv7wXlJP0E3sYKuNHeY",
+  authDomain: "english-placement-c9503.firebaseapp.com",
+  projectId: "english-placement-c9503",
+  storageBucket: "english-placement-c9503.firebasestorage.app",
+  messagingSenderId: "43862715581",
+  appId: "1:43862715581:web:2d8d1f1c7fa72257609bd4"
 };
 window.TEACHER_EMAILS = ["zumourdaalmazloum@gmail.com"];
