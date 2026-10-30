@@ -10,6 +10,7 @@ const fb = initializeApp(window.FIREBASE_CONFIG);
 const auth = getAuth(fb);
 const db = getFirestore(fb);
 
+let errCode = '';
 let user = null, view = 'loading', mode = 'signup', msg = '', result = null, unsub = null, showAll = false;
 let answers = {}, writing = { w1: '', w2: '', w3: '' }, name = '';
 
@@ -29,7 +30,7 @@ onAuthStateChanged(auth, async u => {
     if (snap.exists()) { result = snap.data(); view = 'result'; }
     else if (view !== 'test') { view = 'test'; }
     render();
-  }, () => { view = 'error'; render(); });
+  }, err => { errCode = (err && err.code) || ''; view = 'error'; render(); });
 });
 
 /* ---------- views ---------- */
@@ -99,7 +100,8 @@ function render() {
   else if (view === 'login') app.innerHTML = vLogin();
   else if (view === 'test') app.innerHTML = vTest();
   else if (view === 'result') app.innerHTML = vResult();
-  else app.innerHTML = `<div class="card"><h2>Connection problem</h2><p>Check the internet and reload the page.</p><p class="ar">تحقق من الإنترنت ثم أعد تحميل الصفحة.</p></div>`;
+  else if (errCode === 'permission-denied') app.innerHTML = `<div class="card"><h2>The test is not open yet</h2><p>Your teacher is still setting up this test. Please try again later.</p><p class="ar">المعلم لم يكمل إعداد الاختبار بعد. حاول لاحقاً.</p><p class="note">(Teacher: publish the Firestore rules that include <b>cefr_results</b>.)</p><button class="link" data-act="logout">Sign out</button></div>`;
+  else app.innerHTML = `<div class="card"><h2>Connection problem</h2><p>Check the internet and reload the page.</p><p class="ar">تحقق من الإنترنت ثم أعد تحميل الصفحة.</p>${errCode ? `<p class="note">Error: ${esc(errCode)}</p>` : ''}<button class="link" data-act="logout">Sign out</button></div>`;
 }
 function updateLeft() { const el = document.getElementById('leftnote'); if (!el) return; const left = SECTIONS.reduce((a, s, si) => a + s.qs.filter((q, qi) => answers[`s${si}q${qi}`] === undefined).length, 0); el.textContent = left ? `${left} questions not answered yet` : 'All questions answered'; }
 
