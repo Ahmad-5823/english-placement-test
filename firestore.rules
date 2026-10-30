@@ -35,5 +35,15 @@ service cloud.firestore {
         || (isSelf(uid) && !(resource.data.get('submitted', false) == true
                              && request.resource.data.get('submitted', false) != true));
     }
+
+    // Adult placement test (/level/): one result per student; the student can read their own result
+    // (score, mistakes, teacher feedback); only teachers can change or delete it.
+    match /cefr_results/{uid} {
+      allow create: if isSelf(uid)
+        && request.resource.data.uid == uid
+        && !('teacher' in request.resource.data);
+      allow read: if isSelf(uid) || isTeacher();
+      allow update, delete: if isTeacher();
+    }
   }
 }
